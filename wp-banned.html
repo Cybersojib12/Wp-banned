@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Ban Report Tool</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: #e74c3c;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .content {
+      padding: 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    select, input, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s;
+      background: #f9f9f9;
+    }
+    
+    select:focus, input:focus, textarea:focus {
+      border-color: #e74c3c;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    }
+    
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      color: #777;
+      border-top: 1px solid #eee;
+    }
+    
+    .report-types {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .report-type {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .report-type:hover {
+      border-color: #e74c3c;
+    }
+    
+    .report-type.active {
+      background: #fdecea;
+      border-color: #e74c3c;
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>WhatsApp Ban Report</h1>
+      <p>Report inappropriate accounts for banning</p>
+    </div>
+    
+    <div class="content">
+      <div class="form-group">
+        <label for="number">Phone Number to Report</label>
+        <input type="text" id="number" placeholder="+880XXXXXXXXX" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Report Type</label>
+        <div class="report-types">
+          <div class="report-type active" data-type="sexual">Sexual Content</div>
+          <div class="report-type" data-type="spam">Spam/Scam</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="evidence">Evidence (Optional)</label>
+        <textarea id="evidence" placeholder="Describe the inappropriate behavior or paste chat excerpts..."></textarea>
+      </div>
+      
+      <button class="btn" onclick="sendReport()">SEND BAN REQUEST</button>
+    </div>
+    
+    <div class="footer">
+      © 2025 CLAYMIST CYBER VAIL Tool | All reports are confidential
+    </div>
+  </div>
+
+  <script>
+    // Report type selection
+    const reportTypes = document.querySelectorAll('.report-type');
+    let selectedType = 'sexual';
+    
+    reportTypes.forEach(type => {
+      type.addEventListener('click', () => {
+        reportTypes.forEach(t => t.classList.remove('active'));
+        type.classList.add('active');
+        selectedType = type.dataset.type;
+      });
+    });
+    
+    // Email templates
+    const templates = {
+      sexual: [
+        "URGENT: Explicit Content Violation - Immediate Ban Request",
+        `Dear WhatsApp Trust & Safety Team,
+
+I am writing to urgently report the following account for distributing explicit sexual content in violation of WhatsApp's community guidelines:
+
+Phone Number: NUMBER_HERE
+
+The user has been repeatedly sending unsolicited pornographic material, including:
+- Graphic sexual images/videos
+- Explicit sexual propositions
+- Links to adult websites
+
+This content has been sent to multiple users without consent, including minors. I have attached screenshots as evidence of these violations.
+
+Given the severity and repeated nature of these violations, I request immediate permanent banning of this account from WhatsApp to protect other users.
+
+Please confirm receipt of this report and the actions taken.
+
+Sincerely,
+A Concerned User`
+      ],
+      spam: [
+        "Multiple Violations: Spam/Scam Account Report",
+        `To WhatsApp Abuse Prevention Team,
+
+I wish to report the following account for engaging in fraudulent activities:
+
+Reported Number: NUMBER_HERE
+
+This account is involved in:
+- Financial scams (advance-fee fraud)
+- Fake job offers
+- Phishing attempts
+- Spam broadcasting
+
+The user operates multiple accounts to circumvent previous bans. Attached are message logs demonstrating these patterns.
+
+I urge you to investigate and permanently disable this account and associated numbers to protect the WhatsApp community.
+
+Thank you for your prompt attention to this matter.
+
+Best regards`
+      ]
+    };
+    
+    function sendReport() {
+      const number = document.getElementById('number').value.trim();
+      const evidence = document.getElementById('evidence').value;
+      
+      if (!number.startsWith('+') || number.length < 10) {
+        alert("Please enter a valid international phone number starting with +");
+        return;
+      }
+      
+      const template = templates[selectedType];
+      let body = template[1].replace("NUMBER_HERE", number);
+      
+      if (evidence) {
+        body += "\n\nAdditional Evidence Provided:\n" + evidence;
+      }
+      
+      const subject = encodeURIComponent(template[0]);
+      const bodyEncoded = encodeURIComponent(body);
+      
+      window.location.href = `mailto:abuse@whatsapp.com?subject=${subject}&body=${bodyEncoded}`;
+    }
+  </script>
+</body>
+</html>
